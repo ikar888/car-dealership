@@ -1,13 +1,9 @@
 # Uncomment the imports below before you add the function code
 import requests
 import os
-import logging
 from dotenv import load_dotenv
 
 load_dotenv()
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.ERROR)
 
 backend_url = os.getenv(
     'backend_url', default="http://localhost:3030")
@@ -27,8 +23,8 @@ def get_request(endpoint, **kwargs):
         # Call get method of requests library with URL and parameters
         response = requests.get(request_url)
         return response.json()
-    except Exception as e:
-        logger.error(f"Error in posting review: {e}")
+    except Exception as err:
+        print(f"Unexpected {err=}, {type(err)=}")
         # If any error occurs
         print("Network exception occurred")
 
@@ -52,7 +48,7 @@ def post_review(data_dict):
         response = requests.post(request_url, json=data_dict)
         print(response.json())
         return response.json()
-    except Exception as e:
-        logger.error(f"Error in posting review: {e}")
+    except Exception as err:
+        print(f"Unexpected {err=}, {type(err)=}")
         print("Network exception occurred")
 # Add code for posting review
