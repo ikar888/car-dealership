@@ -117,6 +117,14 @@ def get_dealer_reviews(request, dealer_id):
 def add_review(request):
     if not request.user.is_anonymous:
         data = json.loads(request.body)
+        try:
+            post_review(data)
+            return JsonResponse({"status": 200})
+        except Exception as e:
+            return JsonResponse({
+                "status": 401,
+                "message": "Error in posting review",
+            })
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
 
@@ -125,14 +133,7 @@ def get_cars(request):
     count = CarMake.objects.filter().count()
     print(count)
     if (count == 0):
-        initiate()try:
-            post_review(data)
-            return JsonResponse({"status": 200})
-        except Exception as e:
-            return JsonResponse({
-                "status": 401,
-                "message": "Error in posting review",
-            })
+        initiate()
     car_models = CarModel.objects.select_related('car_make')
     cars = []
     for car_model in car_models:
